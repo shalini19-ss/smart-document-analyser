@@ -1,0 +1,13 @@
+streamlit
+PyMuPDF
+scikit-learn
+vaderSentiment
+wordcloud
+matplotlib
+fpdf
+streamlit-mic-recorder
+SpeechRecognition
+gTTS
+networkx
+pytesseract
+Pillow
