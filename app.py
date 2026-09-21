@@ -247,8 +247,8 @@ if full_text:
             pdf.add_page()
             pdf.set_font("Arial", size=12)
             pdf.multi_cell(0,10, report.encode('latin-1','replace').decode('latin-1'))
-            pdf_bytes = bytes(pdf.output())
-            st.download_button("📄 Download PDF", pdf_bytes, "Report.pdf", mime="application/pdf")
+            pdf_bytes = pdf.output(dest='S').encode('latin-1')
+            st.download_button("📥 Download Report PDF", data=pdf_bytes, file_name="report.pdf", mime="application/pdf")
             st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.markdown('<div class="glass-card" style="text-align:center;"><h2>👋 Upload PDF / Photo / Text to Start!</h2><p>Supports PDF, Image OCR, Voice Input & Output</p></div>', unsafe_allow_html=True)
