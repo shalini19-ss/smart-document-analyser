@@ -208,7 +208,7 @@ if full_text:
                 score = sim[0][best]
                 ans = chunks[best]
                 st.session_state.chat_history.append((q_input, score))
-                if score >= 0.28:
+                if score >= 0.18:
                     st.markdown(f'<div class="answer-box"><h3>✅ Answer ({score*100:.1f}% match)</h3><p style="font-size:17px;">{ans}</p></div>', unsafe_allow_html=True)
                     st.toast("Answer found!", icon="✨")
                     if enable_voice_out and VOICE_OUTPUT:
