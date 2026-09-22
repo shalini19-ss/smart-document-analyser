@@ -226,12 +226,13 @@ if full_text:
                     st.warning("⚠️ This question is not in your document. Please ask from PDF content only.")
                     st.info("💡 Try keywords from your PDF")
 
-                if st.session_state.chat_history:
-                    st.write("**Recent:**")
-                    for qq, ss in st.session_state.chat_history[-4:]:
-                        st.caption(f"👉 {qq} - {ss*100:.0f}%")
-                st.markdown('</div>', unsafe_allow_html=True)        
-with tab3:
+            if st.session_state.chat_history:
+                st.write("**Recent:**")
+                for qq, ss in st.session_state.chat_history[-4:]:
+                    st.caption(f"👉 {qq} - {ss*100:.0f}%")
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        with tab3:
             st.markdown('<div class="glass-card">', unsafe_allow_html=True)
             st.subheader("📝 Summary")
             st.success(summary)
@@ -241,6 +242,7 @@ with tab3:
             ax.axis("off")
             st.pyplot(fig)
             st.markdown('</div>', unsafe_allow_html=True)
+
         with tab4:
             st.markdown('<div class="glass-card">', unsafe_allow_html=True)
             report = f"Report\nWords:{wc}\nTopics:{topics}\nSummary:{summary}"
@@ -252,5 +254,3 @@ with tab3:
             pdf_bytes = pdf.output(dest='S').encode('latin-1')
             st.download_button("📥 Download Report PDF", data=pdf_bytes, file_name="report.pdf", mime="application/pdf")
             st.markdown('</div>', unsafe_allow_html=True)
-else:
-    st.markdown('<div class="glass-card" style="text-align:center;"><h2>👋 Upload PDF / Photo / Text to Start!</h2><p>Supports PDF, Image OCR, Voice Input & Output</p></div>', unsafe_allow_html=True)
