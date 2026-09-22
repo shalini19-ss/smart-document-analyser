@@ -201,14 +201,14 @@ if full_text:
             q_input = st.text_input("Your Question:", value=st.session_state.voice_question, placeholder="Ex: What is CFG? Or use voice from sidebar")
             enable_voice_out = st.checkbox("🔊 Enable Voice Answer (Text to Speech)")
             if q_input:
-                vec = TfidfVectorizer().fit(chunks + [q_input])
+                vec = TfidfVectorizer(stop_words='english', ngram_range=(1,2)).fit(chunks + [q_input])
                 v = vec.transform(chunks + [q_input])
                 sim = cosine_similarity(v[-1], v[:-1])
                 best = sim.argmax()
                 score = sim[0][best]
                 ans = chunks[best]
                 st.session_state.chat_history.append((q_input, score))
-                if score > 0.1:
+                if score >= 0.28:
                     st.markdown(f'<div class="answer-box"><h3>✅ Answer ({score*100:.1f}% match)</h3><p style="font-size:17px;">{ans}</p></div>', unsafe_allow_html=True)
                     st.toast("Answer found!", icon="✨")
                     if enable_voice_out and VOICE_OUTPUT:
@@ -222,14 +222,16 @@ if full_text:
                         except Exception as e:
                             st.error(f"Voice output error: {e}")
                 else:
-                    st.warning("Closest result:")
-                    st.info(ans)
-            if st.session_state.chat_history:
-                st.write("**Recent:**")
-                for qq, ss in st.session_state.chat_history[-4:]:
-                    st.caption(f"👉 {qq} - {ss*100:.0f}%")
-            st.markdown('</div>', unsafe_allow_html=True)
-        with tab3:
+                    st.error(f"❌ No relevant answer found ({score*100:.1f}% match only)")
+                    st.warning("⚠️ This question is not in your document. Please ask from PDF content only.")
+                    st.info("💡 Try keywords from your PDF")
+
+                if st.session_state.chat_history:
+                    st.write("**Recent:**")
+                    for qq, ss in st.session_state.chat_history[-4:]:
+                        st.caption(f"👉 {qq} - {ss*100:.0f}%")
+                st.markdown('</div>', unsafe_allow_html=True)        
+with tab3:
             st.markdown('<div class="glass-card">', unsafe_allow_html=True)
             st.subheader("📝 Summary")
             st.success(summary)
