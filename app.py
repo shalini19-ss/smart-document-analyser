@@ -22,11 +22,16 @@ except:
 
 try:
     import pytesseract
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    import shutil
+    import os
+    # Only use Windows path if file exists (for your local laptop)
+    win_path = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    if os.path.exists(win_path):
+        pytesseract.pytesseract.tesseract_cmd = win_path
+    # If tesseract is in PATH (Streamlit Cloud / Linux), it will find it automatically
     OCR_AVAILABLE = True
 except:
     OCR_AVAILABLE = False
-
 st.set_page_config(page_title="Smart Doc Analyser", layout="wide", page_icon="📚")
 # --- ONLY STYLE IMPROVED FOR TOPICS & FEATURES - BG SAME ---
 st.markdown("""
